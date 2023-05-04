@@ -14,4 +14,8 @@ reCAPTCHA must be integrated on the client side and on the backend web server. O
 
 ### Client-Side Integration
 
-Lets take a look at the `index.php` file, it contains the form and the fields that we wish to include in our email. In the action attribute we shoud have the .php file that is responsible for 
+Lets take a look at the `index.php` file, it contains the form and the fields that we wish to include in our email. In the action attribute we shoud have the .php file that is responsible for sending the validation request to Google and forming the email and submitting it to the Gmail SMTP server.
+
+It is important that the button to start the process does not actually submit the form at this point. Submitting is done once we have obtained the reCAPTCHA validation request token.
+
+            <input type="button" name="submit_btn" id="submit-btn" value="Send Message" class= "btn">
