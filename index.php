@@ -2,17 +2,20 @@
 <html>
   <head>
     <meta charset="utf-8">
+    <!--Google Custom Fonts-->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;400;900&family=Ubuntu&display=swap"
+    rel="stylesheet">
     <!--JQuery library-->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <!--Load the Google reCaptcha JavaScript API-->
-    <script src="https://www.google.com/recaptcha/api.js?render=6LcswdYlAAAAADxf11hO8zWQqXKEJFyl_z40L-Tk"></script>
+    <script src="https://www.google.com/recaptcha/api.js?render=reCaptcha_site_key"></script>
     <!--The button click function grabs a hidden form input and passes the token to the value of the input.-->
     <script>
         $(document).ready(function() {
           $(document).on('click', '#submit-btn', function (event) {
             event.preventDefault();
             grecaptcha.ready(function() {
-              grecaptcha.execute('6LcswdYlAAAAADxf11hO8zWQqXKEJFyl_z40L-Tk', { action: 'submit' }).then(function(token) {
+              grecaptcha.execute('reCaptcha_site_key', { action: 'submit' }).then(function(token) {
                 $('#recaptchaResponse').val(token);
               });
             });
