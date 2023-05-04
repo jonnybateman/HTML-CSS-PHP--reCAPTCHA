@@ -14,8 +14,29 @@ reCAPTCHA must be integrated on the client side and on the backend web server. O
 
 ### Client-Side Integration
 
-Lets take a look at the `index.php` file, it contains the form and the fields that we wish to include in our email. In the action attribute we shoud have the .php file that is responsible for sending the validation request to Google and forming the email and submitting it to the Gmail SMTP server.
+Lets take a look at the `index.php` file, it contains the form and the fields that we wish to include in our email. In the action attribute we shoud have the .php file that is responsible for sending the validation request to Google, forming the email and submitting it to the Gmail SMTP server.
 
-It is important that the button to start the process does not actually submit the form at this point. Submitting is done once we have obtained the reCAPTCHA validation request token.
+It is important that the submit button to start the process does not actually submit the form at this point. Submitting the form is done once we have obtained the reCAPTCHA validation request token.
 
-            <input type="button" name="submit_btn" id="submit-btn" value="Send Message" class= "btn">
+    <input type="button" name="submit_btn" id="submit-btn" value="Send Message" class= "btn">
+            
+ Note: the `type` atrribute is set to 'button' and not 'submit'. When the button is pressed an onClick event is initiated as a JQuery function. Ensure the following code snippet is included in your web page.
+ 
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://www.google.com/recaptcha/api.js?render=6LcswdYlAAAAADxf11hO8zWQqXKEJFyl_z40L-Tk"></script>
+    <!--The button click function grabs a hidden form input and passes the token to the value of the input.-->
+    <script>
+        $(document).ready(function() {
+          $(document).on('click', '#submit-btn', function (event) {
+            event.preventDefault();
+            grecaptcha.ready(function() {
+              grecaptcha.execute('6LcswdYlAAAAADxf11hO8zWQqXKEJFyl_z40L-Tk', { action: 'submit' }).then(function(token) {
+                $('#recaptchaResponse').val(token);
+              });
+            });
+            // Now that we have the token submit the form. 'email_form.php' on web server is invoked. This .php validation
+            // script will send the token, along with the form data entries, to Google's reCaptcha API for validation.
+            $('#contact-form').submit();
+          });
+        });
+    </script>
