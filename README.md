@@ -45,7 +45,7 @@ When the token is obtained it is bound to a hidden `<input>` field of the form w
 
 ### Backend Server Integration
 
-When the form is submitted the form `action` attribute is invoked executing the validation PHP script. It builds a validation request which is posted to the reCAPTCHA Verify API. The response is formulated as a JSON where we decode it to a series of key value pairs and store in an array.
+When the form is submitted the form `action` attribute is invoked executing the validation PHP script. It builds a validation request which is posted to the reCAPTCHA Verify API. The `$recaptcha_response` is the token that we retrieved earlier. Next the response is formulated as a JSON file where we decode it to a series of key value pairs and store in an array.
 
     $recaptcha_api_url = 'https://www.google.com/recaptcha/api/siteverify';
     // Get the Google reCaptcha token that was saved to the hidden input field
