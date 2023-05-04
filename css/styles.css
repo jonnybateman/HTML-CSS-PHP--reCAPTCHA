@@ -1,0 +1,104 @@
+:root {
+  --bg-color: #1f242d;
+  --second-bg-color: #323946;
+  --logo-color: red;
+  --text-color: #a8a8a8;
+  --hover-color: #f92f2f;
+}
+
+.section-heading {
+  font-family: "Montserrat";
+  color: var(--hover-color);
+  text-shadow: 0 0 1rem var(--hover-color);
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.btn {
+  display: inline-block;
+  padding: 0.5rem 1.0rem;
+  background: var(--logo-color);
+  border-radius: 2rem;
+  color: var(--bg-color);
+  box-shadow: 0 0 1rem var(--logo-color);
+  font-size: 1.2rem;
+  transition: .5s ease;
+}
+
+.btn:hover {
+  box-shadow: none;
+  background: var(--logo-color);
+}
+
+/* Contact Me Section */
+
+.contact {
+  background-color: var(--bg-color);
+  min-height: 100vh;
+  padding-top: 10%;
+  padding-bottom: 5rem;
+  padding-left: 10%;
+  padding-right: 10%;
+}
+
+.contact form {
+  text-align: center;
+  margin: 0 auto; /* center the form on the screen */
+  width: 60%;
+}
+
+.input-box {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.input-field {
+  position: relative;
+  width: 49%;
+  margin: .4rem 0;
+}
+
+.textarea-field {
+  margin: .4rem 0;
+}
+
+.input-field input,
+.textarea-field textarea {
+  width: 100%;
+  padding: .5rem;
+  font-size: 1.2rem;
+  color: var(--text-color);
+  background: transparent;
+  border-radius: .6rem;
+  border: .2rem solid var(--second-bg-color);
+}
+
+.input-field input:focus,
+.textarea-field textarea:focus {
+  outline: none;
+}
+
+.textarea-field textarea {
+  display: block; /* <div> display type is block, set <textarea> to 'block' to keep
+                     dimensions of <div> and <textarea> the same. */
+  resize: none;
+}
+
+.form-bg-animation {
+  background: linear-gradient(to right, var(--second-bg-color) 50%, var(--bg-color) 50%);
+  border-radius: .6rem;
+  background-size: 200% 100%;
+  background-position: bottom right;
+  transition: all .5s ease;
+}
+
+.form-bg-animation:focus-within {
+  background-position: bottom left;
+  color: var(--bg-color);
+}
+
+.contact form .btn {
+  margin-top: 1rem;
+}
