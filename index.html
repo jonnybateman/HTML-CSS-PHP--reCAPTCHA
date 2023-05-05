@@ -5,25 +5,16 @@
     <!--Google Custom Fonts-->
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;400;900&family=Ubuntu&display=swap"
     rel="stylesheet">
-    <!--JQuery library-->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <!--Load the Google reCaptcha JavaScript API-->
     <script src="https://www.google.com/recaptcha/api.js?render=reCaptcha_site_key"></script>
-    <!--The button click function grabs a hidden form input and passes the token to the value of the input.-->
-    <script>
-        $(document).ready(function() {
-          $(document).on('click', '#submit-btn', function (event) {
-            event.preventDefault();
-            grecaptcha.ready(function() {
-              grecaptcha.execute('reCaptcha_site_key', { action: 'submit' }).then(function(token) {
-                $('#recaptchaResponse').val(token);
-              });
-            });
-            // Now that we have the token submit the form. 'email_form.php' on web server is invoked. This .php validation
-            // script will send the token, along with the form data entries, to Google's reCaptcha API for validation.
-            $('#contact-form').submit();
-          });
-        });
+    <script type="text/javascript">
+      function formatEmail(value) {
+        return value.trim().toLowerCase();
+      }
+
+      function formatName(value) {
+        return value.trim();
+      }
     </script>
     <!--Website Custom Stylesheet-->
     <link rel="stylesheet" href="css/styles.css">
@@ -35,15 +26,15 @@
       <form method="post" id="contact-form" action="php/email_form.php">
         <div class="input-box">
           <div class="input-field form-bg-animation">
-            <input type="text" placeholder="Full Name" name="full_name" required>
+            <input type="text" placeholder="Full Name" name="full_name" onBlur="this.value=formatName(this.value)" required>
           </div>
           <div class="input-field form-bg-animation">
-            <input type="text" placeholder="Email" name="email" required>
+            <input type="text" placeholder="Email" name="email" onBlur="this.value=formatEmail(this.value)" required>
           </div>
         </div>
         <div class="input-box">
           <div class="input-field form-bg-animation">
-            <input type="text" placeholder="Mobile Number" name="mobile_number">
+            <input type="tel" placeholder="Phone Number" name="phone_number">
           </div>
           <div class="input-field form-bg-animation">
             <input type="text" placeholder="Email Subject" name="subject" required>
@@ -57,6 +48,24 @@
         <!-- Input of type button, onClick will invoke a Google reCaptcha request returning the
              necessary token to allow us to send form data to reCaptcha API for validation.-->
         <input type="button" name="submit_btn" id="submit-btn" value="Send Message" class= "btn">
+        <script>
+          let sendBtn = document.getElementById("send-btn");
+
+          // Retrieve a validation request token from the Google reCAPTCHA API and store it in the
+          // hidden input element 'recaptchaResponse'. Once retrieved we can then submit the form.
+          function getRecaptchaToken() {
+            grecaptcha.ready(function() {
+              grecaptcha.execute('6LcswdYlAAAAADxf11hO8zWQqXKEJFyl_z40L-Tk', { action: 'submit' }).then(function(token) {
+                document.getElementById("recaptchaResponse").value = token;
+                // Now that we have the token submit the form. 'email_form.php' on web server is invoked. This .php validation
+                // script will send the token, along with the form data entries, to Google's reCaptcha API for validation.
+                document.getElementById("contact-form").submit();
+              });
+            });
+          }
+
+          sendBtn.addEventListener("click", getRecaptchaToken, false);
+        </script>
       </form>
     </section>
   </body>
