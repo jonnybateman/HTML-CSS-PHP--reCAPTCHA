@@ -9,7 +9,7 @@
   require("<path>/config.php");
 
   // If we have recieved a reCaptcha validation request token then...
-  if (isset($_POST['recaptcha_response'])) {
+  if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['recaptcha_response'])) {
 
     $recaptcha_api_url = 'https://www.google.com/recaptcha/api/siteverify';
 
@@ -34,7 +34,7 @@
     // illegal characters preventing malicious code injections.
     $full_name = filter_var($_POST['full_name'],FILTER_SANITIZE_STRING);
     $sender_email = filter_var($_POST['email'],FILTER_SANITIZE_STRING);
-    $mobile_number = filter_var($_POST['mobile_number'],FILTER_SANITIZE_NUMBER_INT);
+    $phone_number = filter_var($_POST['phone_number'],FILTER_SANITIZE_NUMBER_INT);
     $subject = filter_var($_POST['subject'],FILTER_SANITIZE_SPECIAL_CHARS);
     $message = filter_var($_POST['message'],FILTER_SANITIZE_STRING);
 
@@ -51,7 +51,7 @@
     // Setup the email body.
     $email_body = "You have received a message from $full_name." . PHP_EOL .
                   "Email: $sender_email" . PHP_EOL .
-                  "Mobile Number: $mobile_number" . PHP_EOL .
+                  "Phone Number: $phone_number" . PHP_EOL .
                   "Message:" . PHP_EOL .
                   "  $message";
 
