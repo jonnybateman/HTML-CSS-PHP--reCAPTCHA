@@ -18,26 +18,38 @@ Lets take a look at the `index.php` file, it contains the form and the fields th
 
 It is important that the submit button to start the process does not actually submit the form at this point. Submitting the form is done once we have obtained the reCAPTCHA validation request token.
 
-    <input type="button" name="submit_btn" id="submit-btn" value="Send Message" class= "btn">
+    <button type="button" id="send-btn" class="btn">Send Message</button>
             
-Note: the `type` atrribute is set to 'button' and not 'submit'. When the button is pressed an onClick event is initiated as a JQuery function. Ensure the following code snippet is included in your web page.
+Note: the `type` atrribute is set to 'button' and not 'submit'. When the button is pressed an onClick event is initiated calling a JavaScript function. Ensure the following code snippet is included in your web page.
  
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-    <script src="https://www.google.com/recaptcha/api.js?render=reCAPTCHA_site_key"></script>
-    <!--The button click function grabs a hidden form input and passes the token to the value of the input.-->
-    <script>
-        $(document).ready(function() {
-          $(document).on('click', '#submit-btn', function (event) {
-            event.preventDefault();
-            grecaptcha.ready(function() {
-              grecaptcha.execute('reCAPTCHA_site_key', { action: 'submit' }).then(function(token) {
-                $('#recaptchaResponse').val(token);
-              });
+    <head>
+      ...
+      <script src="https://www.google.com/recaptcha/api.js?render=reCAPTCHA_site_key"></script>
+      ...
+    </head>
+    <body>
+      ...
+      <form...>
+      ...
+      </form>
+      <script>
+        let sendBtn = document.getElementById("send-btn");
+
+        // Retrieve a validation request token from the Google reCAPTCHA API and store it in the
+        // hidden input element 'recaptchaResponse'. Once retrieved we can then submit the form.
+        function getRecaptchaToken() {
+          grecaptcha.ready(function() {
+            grecaptcha.execute('6LcswdYlAAAAADxf11hO8zWQqXKEJFyl_z40L-Tk', { action: 'submit' }).then(function(token) {
+              document.getElementById("recaptchaResponse").value = token;
+              document.getElementById("contact-form").submit();
             });
-            $('#contact-form').submit();
           });
-        });
-    </script>
+        }
+
+        sendBtn.addEventListener("click", getRecaptchaToken, false);
+      </script>
+      ...
+    </body>
 
    Replace 'reCAPTCHA_site_key' with your own site key.
    
@@ -45,7 +57,7 @@ When the token is obtained it is bound to a hidden `<input>` field of the form w
 
 ### Backend Server Integration
 
-When the form is submitted the form `action` attribute is invoked executing the validation PHP script. It builds a validation request which is posted to the reCAPTCHA Verify API. The `$recaptcha_response` is the token that we retrieved earlier. Next the response is formulated as a JSON file where we decode it to a series of key value pairs and store in an array.
+When the form is submitted the form `action` attribute is invoked executing the validation PHP script. It builds a validation request which is posted to the reCAPTCHA Verify API. The `$recaptcha_response` is the token that we retrieved earlier. The response from the Verify API is formulated as a JSON file where we decode it to a series of key value pairs and store in an array.
 
     $recaptcha_api_url = 'https://www.google.com/recaptcha/api/siteverify';
     // Get the Google reCaptcha token that was saved to the hidden input field
