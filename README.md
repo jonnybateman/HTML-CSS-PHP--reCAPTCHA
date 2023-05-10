@@ -39,7 +39,7 @@ Note: the `type` atrribute is set to 'button' and not 'submit'. When the button 
         // hidden input element 'recaptchaResponse'. Once retrieved we can then submit the form.
         function getRecaptchaToken() {
           grecaptcha.ready(function() {
-            grecaptcha.execute('6LcswdYlAAAAADxf11hO8zWQqXKEJFyl_z40L-Tk', { action: 'submit' }).then(function(token) {
+            grecaptcha.execute('reCAPTCHA_site_key', { action: 'submit' }).then(function(token) {
               document.getElementById("recaptchaResponse").value = token;
               document.getElementById("contact-form").submit();
             });
